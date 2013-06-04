@@ -1,0 +1,145 @@
+\section{Methods}
+\subsection*{Data Collection}
+By parsing the archives on \href{http://www.go-hero.net/jam/13}{go-hero.net (link)} we downloaded all the submissions in C++ for the tasks of the qualification round and the round 1A of the code jam 2013. We focused on submissions in C++, as this is by far the most popular language in the contest. For instance, 11342 of all the 23115 submissions to the problem 'lawnmower' in the qualification round were written in C++.
+
+To get the set of programs that solve only the small input and the set of efficient programs that also solve large input we split the submissions as follows: If a contestant was successful on both inputs, we only considered his solution to the large input. We ignored his submission on the small input, as we do not know whether the participant wrote a separate slower program for the small input or just used his efficient solution. If a contestant only solved the small input, we add this submission to the set of slow programs.
+
+Note that this is a potential source of errors, as the contestant might have in fact written a fast solution, but just did not have the time to run it on both inputs.
+We explored the possibility of running and timing the submissions ourselves, but that proved to be too challenging, as many contestants expected specific filenames for input and output or made other assumptions of the way they were compiled and run. Some contestants even prepared their code to link it against a custom framework such that they can run each test case in parallel.
+Also it is not guaranteed, that the participants really upload their proper source code, since it is not checked or in any way enforced by the contest grading system.
+
+We did not consider the easiest task of the qualification round called 'tictactoe', because all but 213 of the 8450 C++-contestants solved the full task, as the large input was not significantly more complicated to solve.
+
+Table \ref{tbl:taskList} list the size of these datasets. We can see that in both rounds the tasks get increasingly harder, such that there are fewer successful submissions and the percentage of slow submissions increases.
+This way we ended up with a dataset for 6 tasks with a total of 18606 submissions consisting of 1.275 million lines of code.
+
+\begin{table}
+\caption{List of the 6 tasks from Google Code Jam 2013 that we used.}
+\label{tbl:taskList}
+\begin{center}
+\begin{tabular}{|l|l|l|l|}
+\hline
+Contest Round & Taskname & \# slow samples & \# fast samples \\
+\hline
+Qualification & Lawnmower &	305 &	5738\\
+& Fairsquare &	2819	 & 4122\\
+& Treasure	& 651 & 	118\\
+\hline
+Round 1A & Bullseye	&  1127	 & 1391\\
+& Energy	 & 944 & 	520\\
+& Luck & 	625 & 	246\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsection*{Feature Extraction}
+We wrote the python-tool \texttt{featureExtraction.py} to run across the dataset and extract 35 integer-valued features for each submission.
+Inspired by the very few simple features used in the programming style fingerprint in [1], we manipulate the source string in \texttt{featureCodeAnalysis.py} to get these features.
+
+We strip defines, includes and comments from the code and count the number of occurrences of several keywords and C++ STL classes in the remaining code.
+We also extract all integer values in the code and use the maximal value as a feature, which might indicate the biggest bound used in the code.
+To focus on the efficiency of the implementations we look for the most nested part of the code, so the section of the code where the most curly braces are open, and take some features of this section into account. Table \ref{tbl:featureList} lists all 35 features we used.
+
+\begin{table}
+\caption{List of the 35 features we extracted}
+\label{tbl:featureList}
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+length   &     
+lines     &    
+includesCount &
+includesLength &
+definesCount  \\
+%
+definesLength &
+commentsLength&
+commentsCount &
+loops         &
+vars          \\
+%
+int           &
+float         &
+double        &
+char          &
+long          \\
+%
+depth         &
+deepLength    &
+deepCount     &
+for           &
+while         \\
+%
+if            &
+else          &
+switch        &
+maxConstant   &
+functionCount \\
+
+set           &
+priority\_queue &
+map           &
+multimap      &
+queue         \\
+%
+stack         &
+list          &
+vector        &
+unordered\_map &
+unordered\_set \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+We then wrote \texttt{featureCollection.py}, which splits our dataset into equally sized training sets and test sets for each task. In order to use our classifier models we need each feature to be binary. All our features are positive integers so far, so we need to convert them by comparing them to some threshold value. We tried out several ways to get such a threshold by taking the following values of the training data:
+\begin{itemize}
+\item median
+\item mean
+\item maximum separator (value where the percentage of slow programs versus the percentage of fast programs on one side of the threshold differed the most)
+\item quartiles (25th, 50th and 75th percentiles)
+\item 11-quantiles (such that we get all $\frac{100i}{11}$-th percentiles for $i = 1,..,10$)
+\end{itemize}
+
+This way we converted each integer feature into a single binary feature (for median, mean and maximum separator) or into 3 or 10 correlated binary features.
+
+The median has the advantage that roughly half of the binary features will be zero and half of them will be one. 
+However it is problematic for features that are zero (or any other fixed value) in most of the samples. For instance  in the training data of task 'Bullseye' the feature 'set' is non-zero only in 16 out of 1233 samples. So the median is zero and we need to use $>$-comparison (and not $\geq$-comparison) to make sure that only these 16 samples get assigned the binary feature one.
+
+Our script finally outputs MATLAB-codefiles for each dataset. For the multi-task setup we combined the 3 tasks from the qualification round to our multi-task training set and the 3 tasks from the round 1A to our multi-task training set (see script \texttt{prepareMultitaskSets.m}). To get v
+
+\subsection*{Single-Task Classifiers}
+Given these datasets we implemented, trained and applied classifiers for each task separately.
+We implemented the Naive Bayes classifier (see \texttt{nb\_learn.m} and \texttt{nb\_run.m}) and logistic regression classifier (see \texttt{logreg\_learn.m} and \texttt{logreg\_run.m}) using what we learned in class and in the first homework.
+
+\subsection*{Multi-Task Classifier}
+Finally we implemented the multi-task logistic regression model from [3]. We briefly summarize this method here as we did in the literature survey.
+
+\paragraph{Problem setup}
+We are given a set of related binary tasks $T_1, \dots, T_M$ with corresponding training data $D = \{S_1, \dots, S_M\}$. Each dataset consists of some feature vector $x$ of a fixed length $d$ and a binary class $y$, so $S_i = \{(x_n^i, y_n^i)\}_{n=1,\dots,N(i)}$ with $x_n^i \in \R^d$ and $y_n^i \in \{-1,1\}$.
+
+If we now train separate logistic regression classifiers $f_i$ for each task $T_i$ we would learn separate weight vectors $\w^{(i)}$ leading to a weight matrix $W = (\w^{(1)}, \dots, \w^{(M)})$. Each classifier $f_i$ uses the same logistic regression formula we saw in class, so
+\begin{align*}
+f_i(x) = P(y=1 \mid x, T_i) = \frac{1}{1+exp(-\w^{(i)} x^T)}.
+\end{align*}
+
+They denote the negated log-likelihood estimator over all tasks as $L(D,W)$ and add a Gaussian prior to regularize the weights. If we just take the norm of the weight matrix we end up with a loss function $H(W)$ that corresponds to what we saw in class
+\begin{align*}
+H(W) = L(D,W) + \frac{1}{\sigma^2} \norm{W}_2 \text{, where } L(D,W) = -\sum_{i=1}^{M} \sum_{n=1}^{N(i)} log(P(y_i^n \mid x_i^n, W)).
+\end{align*}
+This would keep the different tasks completely unrelated. To couple the parameters they impose a prior distribution on the rows of $W$. So instead of the L2-norm of $W$ as the regularization term, they take the norm of the \emph{row-mean vector} $\wm$ of $W$ into account, where $\wm_j = \sum_{i=1}^M w_{j}^{(i)}/M$.
+By adding the deviations of each $\w_{(i)}$ from $\wm$ to the regularization term, the goal is to get as $\wm$ the best possible fit across all tasks. They call the model hierarchical as now $\wm$ is the best fit across all $\w^{(i)}$ and each $\w^{(i)}$ is the best fit for its task. So they propose the loss function
+\begin{align*}
+G(W) = L(D,W) + R(W) \text{, where } R(W) = \frac{1}{\sigma_1^2} \norm{\wm}_2 + \frac{1}{\sigma_2^2} \sum_{i=1}^M \norm{\w^{(i)} - \wm}_2.
+\end{align*}
+Note that we now have two variances $\sigma_1^2$ and $\sigma_2^2$ that are parameters of the model.
+
+\paragraph{Training Algorithm}
+To train the model, so to minimize the loss function, they applied the BFGS gradient descent method. Compared to what we did in our homework, the derivation of the gradient gets more complicated, as the regularization part of the gradient depends on $\wm$ now. They derive
+\begin{align*}
+\frac{\partial R(W)}{\partial w_k^{(s)}} = \frac{2 w_k}{\sigma_1^2}\frac{\partial \wm_k}{\partial w_k^{(s)}} + \frac{2}{\sigma_2^2} \sum_{i=1}^{M}((w_k^{(i)} - \wm_k)\frac{\partial\wm_k}{\partial w_k^{(s)}}) \text{, where } \frac{\partial \wm_j(W)}{\partial w_k^{(s)}} = \begin{cases} \frac{\sigma_1^2}{\sigma_2^2 + M\sigma_1^2} & \text{if } j=k\\
+0 & \text{if } j\neq k
+\end{cases}.
+\end{align*}
+Unfortunately the authors do not mention whether this extended model has an effect on the number of iterations needed until the gradient descent method converges. Also they do not state how to choose the model parameters $\sigma_1$ and $\sigma_2$.

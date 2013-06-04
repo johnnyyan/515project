@@ -1,0 +1,14 @@
+NB Accuracies on the first three tasks:
+(only for the five basic features, without pseudocounts
+to study the dependence on the binary transformation)
+
+Tasks 			t0			t1			t2
+Method ------------------------------------------------------------------------------
+Median			58.3333%		64.0531%		71.3953% 
+Mean 			53.7736%		68.275%			72.7907%		
+MaxSeparator		59.0409%		67.0688%		73.2558%
+-------------------------------------------------------------------------------------
+Train Small		45.1043%		74.8792%		74.6032%
+Train Large		54.8957%		25.1208%		25.3968%
+Test Small		44.4182%		74.7889%		68.8372%
+Test Large		55.5818%		25.2111%		31.1628%

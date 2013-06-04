@@ -1,0 +1,7 @@
+Task 0: bullseye with small: 1127 and large: 1391
+Task 1: energy with small: 944 and large: 520
+Task 2: luck with small: 625 and large: 246
+(Task 0: tictactoe with small: 213 and large: 8237)
+Task 1: lawnmower with small: 305 and large: 5738
+Task 2: fairsquare with small: 2819 and large: 4122
+Task 3: treasure with small: 651 and large: 118

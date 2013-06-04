@@ -1,0 +1,60 @@
+Advanced Features - Before and After comparison
+(with the non-c++-code bug still in there)
+using MEDIAN as split
+
+Task 1: energy with small: 944 and large: 520
+
+Basic Features:
+    labels = ['length', 'lines', 'includes', 'loops', 'vars'];
+
+Training Set Distribution: 64.0496% vs 35.9504%
+Test Set Distribution: 64.9051% vs 35.0949%
+NB Accuracy: 70.3252% for alpha 0.000000
+NB Precision: 56.4516% for alpha 0.000000
+NB Recall: 67.5676% for alpha 0.000000
+NB F1 measure: 61.5114% for alpha 0.000000
+
+Advanced Features:
+(with maximum depth)
+Training Set Distribution: 64.0496% vs 35.9504%
+Test Set Distribution: 64.9051% vs 35.0949%
+NB Accuracy: 70.5962% for alpha 0.000000
+NB Precision: 56.7308% for alpha 0.000000
+NB Recall: 68.3398% for alpha 0.000000
+NB F1 measure: 61.9965% for alpha 0.000000
+
+
+(more features)
+labels = ['length', 'lines', 'includesCount', 'includesLength', 'definesCount', 'definesLength', 'commentsLength', 'commentsCount', 'loops', 'vars', 'depth', 'deeplength'];
+Training Set Distribution: 64.0496% vs 35.9504%
+Test Set Distribution: 64.9051% vs 35.0949%
+NB Accuracy: 69.1057% for alpha 0.000000
+NB Precision: 54.7692% for alpha 0.000000
+NB Recall: 68.7259% for alpha 0.000000
+NB F1 measure: 60.9589% for alpha 0.000000
+
+(add numerical constant)
+Training Set Distribution: 64.0496% vs 35.9504%
+Test Set Distribution: 64.9051% vs 35.0949%
+NB Accuracy: 70.3252% for alpha 0.000000
+NB Precision: 56.4103% for alpha 0.000000
+NB Recall: 67.9537% for alpha 0.000000
+NB F1 measure: 61.6462% for alpha 0.000000
+
+(with all 35 features (number of functions and counting keywords))
+    labels = ['length', 'lines', 'includesCount', 'includesLength', 'definesCount', 'definesLength', 'commentsLength', 'commentsCount', 'loops', 'vars', 'int','float','double','char','long', 'depth', 'deepLength', 'deepCount', 'for', 'while', 'if', 'else', 'switch', 'maxConstant','functionCount', 'set', 'priority_queue', 'map', 'multimap', 'queue', 'stack', 'list', 'vector', 'unordered_map', 'unordered_set'];
+
+Training Set Distribution: 64.0496% vs 35.9504%
+Test Set Distribution: 64.9051% vs 35.0949%
+NB Accuracy: 76.4228% for alpha 0.000000
+NB Precision: 64.214% for alpha 0.000000
+NB Recall: 74.1313% for alpha 0.000000
+NB F1 measure: 68.8172% for alpha 0.000000
+
+(correct dataset)
+Training Set Distribution: 64.8686% vs 35.1314%
+Test Set Distribution: 64.3443% vs 35.6557%
+NB Accuracy: 76.9126% for alpha 0.000000
+NB Precision: 65.8621% for alpha 0.000000
+NB Recall: 73.1801% for alpha 0.000000
+NB F1 measure: 69.3285% for alpha 0.000000

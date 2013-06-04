@@ -1,0 +1,49 @@
+5 features
+---------
+TASK 1
+Training Set Distribution: 48.7429 vs 51.2571
+Test Set Distribution: 47.8503 vs 52.1497
+NB Accuracy: 59.793
+NB Precision: 64.9402
+NB Recall: 49.771
+NB F1 measure: 56.3526
+---------
+TASK 2
+Training Set Distribution: 64.8686 vs 35.1314
+Test Set Distribution: 64.3443 vs 35.6557
+NB Accuracy: 69.5355
+NB Precision: 57.197
+NB Recall: 57.8544
+NB F1 measure: 57.5238
+---------
+TASK 3
+Training Set Distribution: 75.2273 vs 24.7727
+Test Set Distribution: 68.2243 vs 31.7757
+NB Accuracy: 71.2617
+NB Precision: 56.701
+NB Recall: 40.4412
+NB F1 measure: 47.2103
+---------
+TASK 4
+Training Set Distribution: 5.25246 vs 94.7475
+Test Set Distribution: 4.96524 vs 95.0348
+NB Accuracy: 95.0348
+NB Precision: 95.0348
+NB Recall: 100
+NB F1 measure: 97.4542
+---------
+TASK 5
+Training Set Distribution: 40.9185 vs 59.0815
+Test Set Distribution: 41.1646 vs 58.8354
+NB Accuracy: 61.6604
+NB Precision: 67.4693
+NB Recall: 67.2709
+NB F1 measure: 67.37
+---------
+TASK 6
+Training Set Distribution: 86.0406 vs 13.9594
+Test Set Distribution: 83.2447 vs 16.7553
+NB Accuracy: 80.3191
+NB Precision: 41.791
+NB Recall: 44.4444
+NB F1 measure: 43.0769

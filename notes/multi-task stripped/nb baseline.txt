@@ -1,0 +1,25 @@
+>> nb_run_baseline
+---------
+TASK 1
+Training Set Distribution: 43.6364 vs 56.3636
+Test Set Distribution: 47.8503 vs 52.1497
+NB Accuracy: 68.949
+NB Precision: 67.4113
+NB Recall: 78.3206
+NB F1 measure: 72.4576
+---------
+TASK 2
+Training Set Distribution: 43.6364 vs 56.3636
+Test Set Distribution: 64.3443 vs 35.6557
+NB Accuracy: 57.7869
+NB Precision: 44.8936
+NB Recall: 80.8429
+NB F1 measure: 57.7291
+---------
+TASK 3
+Training Set Distribution: 43.6364 vs 56.3636
+Test Set Distribution: 68.2243 vs 31.7757
+NB Accuracy: 60.0467
+NB Precision: 41.8605
+NB Recall: 66.1765
+NB F1 measure: 51.2821

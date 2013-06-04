@@ -1,0 +1,28 @@
+Detecting outsourced Student Programming Assignments
+
+In this paper data mining techniques are applied to detect if a student's programming assignment is likely to have been coded by some third-party. According to the paper such 'ghost-coder' companies have experienced a large growth over the past years, due to rise of the internet and wide difference in wages around the world.
+
+In detecting such outsourced assignments they faced the following challenges:
+* traditional plagiarism detection schemes can not be applied, as the outsourced solution are not just copies of other solutions. Much like ghost-writers, someone gets paid to solve and implement a students homework on their own, ensuring that it is different from all other submissions.
+* The course was a low-level CS course, meaning that most students are improving their programming skills throughout the term. So it is likely that their programming style evolves and hopefully improves over time. The authors suppose that such changes in style would be highly correlated to other students. For example, if a student starts writing more comments this might be caused by the feedback he got for previous assignments or by seeing code samples in class.
+* The only had a relatively small number of programs per student (seven, resp. six), as it is only based on submissions for a single course. They propose taking the full history of assignments also from other courses into account in future applications.
+* common influence by instructor (might have given hints or pointers on how the student code should look like) -> While this makes the distinction within the class harder, this might help in differentiating outsourced code. an outsourced program would be missing these elements
+
+They extracted high-level features (number of lines of code, number of comments, average length of variable names, number of variables, relative number of for loops and the number of bits in the zipped program) in trying to capture the students programming style. Note that none of these features capture the functionality of the program. Based on these features they used the C4.5 algorithm to build a decision tree that tries to distinguish the students.
+
+At this point we want to highlight the main limitations of the paper
+* very small sample size (only 12 students, each 
+* only very few code features used
+* They found that the best students were easier to identify than bad students. Given that the best students are unlikely to outsource their assignments, this is an important disadvantage of the approach.
+
+Despite these limitations they have some interesting results:
+* successfully assigned 74.70% of the programs to the author
+* relative number of for loops was less significant than other features. Top 3 were lines of codes, number of comments and variable length
+
+Proposed Expansions
+They make a few proposal for improvements at the end of the paper. Of course, a bigger dataset would be favorable.  For larger class sizes it would make sense to cluster the students into groups of coders with similar programming styles. Since the more struggling students were found harder to distinguish, they propose to investigate features that specifically address these students.
+
+For us:
+* we have much more students, but only very few lines of code per student
+* we don't want to identify the coder, but we want to classify them (resp. their programs) into slow/fast
+* Our objective is different in the way that our focus includes the functionality of the program. As we are not trying to identify the coder but the efficiency of the implementation, the high-level features that they used might prove to be less effective in our case. In our dataset we know a priori that all programs are solving the same task and that they are correct (but maybe inefficient). This allows us to isolate the effeciency of the implementation, where static high-level features might prove to be effective as well.

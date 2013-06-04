@@ -1,0 +1,32 @@
+A hierarchical Approach for Multi-task Logistic Regression
+
+This paper presents a technique for automatic pattern classification for a set of related tasks.
+On an abstract level a classification task asks for assigning an object to one out of a set of predefined  classes, when given a set of features that describe the object. The single letter optical character recognition task that we saw in our first homework is a good example for such a task.
+
+Now often one wants to train several classifiers for several tasks, that might share some common structure. Like, if we want to train handwriting classifiers for person's unqiue style of writing, we want to make use of the fact that all of them use the english alphabet. Also we might want to get a generic classifier that is able to perform well for new handwriting, that was not included in the training data.
+
+The authors illustrate the problem using facial verification as we will see later on. But first we want to summarize the mathematical steps they proposed to extend logistic regression to multi-task learning. We will focus on the binary classification task, as this is what we want to use in our project.
+
+Problem setup
+Given a set of related binary tasks $T_1, \dots, T_M$
+
+Training Algorithm
+adopt the gradient, than use gradient descent methods
+
+Experiments
+* face verifcation	
+	* binary problem
+	* frontal face images from 126 different subjects (26 pictures each)
+	* they don't provide any information on what the features were that they trained the classifier with
+
+
+Advantages
+* can work with only very few samples per task
+* a quite generic model that is not targeted to any specific application and sounds reasonable for many multi-task problems.
+* not considerably harder to optimize than training the separate classifiers
+
+Disadvantages
+* The method makes an assumption on how the tasks are related by the particular choice of loss function. This statistical prior restricts the way information between features for different tasks can be shared.
+
+In our project
+* The authors note that multi-task learning is most effective (in comparison with single task learning) if there are only a few samples per class for training. As we collected several hundred submissions for each programming task for the dataset in our project, this might lead to only very limited improvement by multi-task logistic regression. However, we might consider training classifiers with only a few samples as well. This would correspond to the situation an organizer of a smaller contest would face 

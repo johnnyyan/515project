@@ -1,0 +1,54 @@
+Advanced Features - Before and After comparison
+(with the non-c++-code bug still in there)
+using MEDIAN as split
+
+Task 0: bullseye with small: 1127 and large: 1391
+
+Basic Features:
+    labels = ['length', 'lines', 'includes', 'loops', 'vars'];
+
+Training Set Distribution: 45.1043% vs 54.8957%
+Test Set Distribution: 44.4182% vs 55.5818%
+NB Accuracy: 58.3333% for alpha 0.000000
+NB Precision: 64.16% for alpha 0.000000
+NB Recall: 56.7185% for alpha 0.000000
+NB F1 measure: 60.2102% for alpha 0.000000
+
+
+Advanced Features:
+(with maximum depth)
+Training Set Distribution: 45.1043% vs 54.8957%
+Test Set Distribution: 44.4182% vs 55.5818%
+NB Accuracy: 58.4119% for alpha 0.000000
+NB Precision: 63.9498% for alpha 0.000000
+NB Recall: 57.7086% for alpha 0.000000
+NB F1 measure: 60.6691% for alpha 0.000000
+
+
+(more features)
+labels = ['length', 'lines', 'includesCount', 'includesLength', 'definesCount', 'definesLength', 'commentsLength', 'commentsCount', 'loops', 'vars', 'depth', 'deeplength'];
+Training Set Distribution: 45.1043% vs 54.8957%
+Test Set Distribution: 44.4182% vs 55.5818%
+NB Accuracy: 59.2767% for alpha 0.000000
+NB Precision: 64.7426% for alpha 0.000000
+NB Recall: 58.6987% for alpha 0.000000
+NB F1 measure: 61.5727% for alpha 0.000000
+
+
+(with all 35 features (number of functions and counting keywords))
+    labels = ['length', 'lines', 'includesCount', 'includesLength', 'definesCount', 'definesLength', 'commentsLength', 'commentsCount', 'loops', 'vars', 'int','float','double','char','long', 'depth', 'deepLength', 'deepCount', 'for', 'while', 'if', 'else', 'switch', 'maxConstant','functionCount', 'set', 'priority_queue', 'map', 'multimap', 'queue', 'stack', 'list', 'vector', 'unordered_map', 'unordered_set'];
+Training Set Distribution: 45.1043% vs 54.8957%
+Test Set Distribution: 44.4182% vs 55.5818%
+NB Accuracy: 69.1824% for alpha 0.000000
+NB Precision: 74.6479% for alpha 0.000000
+NB Recall: 67.4682% for alpha 0.000000
+NB F1 measure: 70.8767% for alpha 0.000000
+
+(correct clean dataset)
+Training Set Distribution: 48.7429% vs 51.2571%
+Test Set Distribution: 47.8503% vs 52.1497%
+NB Accuracy: 70.2229% for alpha 0.000000
+NB Precision: 73.1466% for alpha 0.000000
+NB Recall: 67.7863% for alpha 0.000000
+NB F1 measure: 70.3645% for alpha 0.000000
+

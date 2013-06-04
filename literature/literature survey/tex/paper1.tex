@@ -1,0 +1,30 @@
+\section{Detecting outsourced Student Programming Assignments}
+by Bruce S. Elenbogen and Naeem Seliya in Journal of Computing Sciences in Colleges 23.3 (2008): 50-57.
+\href{http://dl.acm.org/ft_gateway.cfm?id=1295123&ftid=466864&dwn=1&CFID=324710951&CFTOKEN=75941419}{(Link to the PDF)}
+
+\paragraph{Background}
+In this paper data mining techniques are applied to detect if a student's programming assignment is likely to have been coded by some third-party. According to the paper such 'ghost-coder' companies have experienced a large growth over the past years, due to the rise of the internet and a wide difference in wages around the world.
+
+In detecting such outsourced assignments they faced the following challenges:
+\begin{itemize}
+\item Traditional plagiarism detection schemes can not be applied, as the outsourced solutions are not just copies of other solutions. Much like ghost-writers, someone gets paid to solve and implement a students homework on their own, ensuring that it is different from all other submissions.
+\item The course was a lower-level CS course, meaning that most students were improving their programming skills throughout the term. So it is likely that their programming style evolves and hopefully improves over time, which makes it harder to identify a student based on his programming style. The authors suppose that such changes in style would be highly correlated to other students. For example, if a student starts writing more comments this might be caused by the feedback he got for previous assignments or by seeing code samples in class.
+\item They only had a relatively small number of programs per student (seven, resp. six), as it is only based on submissions for a single course.
+%They propose taking the full history of assignments also from other courses into account in future applications.
+\item The instructor of the course is a common influence to all students. He might have given hints or pointers on how the student code should look like. While this makes the distinction within the class harder, this might help in differentiating outsourced code. An outsourced program would be missing the elements outlined in class.
+\end{itemize}
+
+\paragraph{Method and Results} They extracted high-level features (number of lines of code, number of comments, average length of variable names, number of variables, relative number of for loops and the number of bits in the zipped program) to capture the students programming style. Note that none of these features capture the functionality of the program. Based on these features they used the C4.5 algorithm to build a decision tree to distinguish the students.
+
+At this point we want to highlight the two main limitations of the paper, from our point of view. First, they only used a very small code base of 12 students and a total of 83 programs. Also, they considered only a few seemingly arbitrary features. They found that the best students were easier to identify than bad students. Given that the best students are unlikely to outsource their assignments, it remains unclear how effective the approach would be to detect outsourced code in practice.
+
+Despite these limitations they have some interesting results.
+Their decision tree was able to successfully assign $75\%$ of the programs to the author.
+They found that the 3 most important features were number of lines of codes, number of comments and variable length and that the relative number of for loops was less significant than the other features.
+
+\paragraph{Discussion}
+Of course, a bigger dataset would be favourable. For larger class sizes it would make sense to cluster the students into groups of coders with similar programming styles. Since the more struggling students were found harder to distinguish, they propose to investigate features that specifically address these students.
+
+For our Code Jam dataset we hope to achieve useful classifiers also by just using such high-level features.
+Our dataset has much more students, but only very few lines of code per student.
+In our project we do not want to identify the coder, but we want to group them (respectively their programs) into slow vs. fast buckets. Our objective is different in the way that our focus includes the functionality of the program. As we are not trying to identify the coder but the efficiency of the implementation, the high-level features that they used might prove to be less effective in our case. In our dataset we know a priori that all programs are solving the same task and that they are correct (but maybe inefficient). This allows us to isolate the efficiency of the implementation, where static high-level features might prove to be effective as well.

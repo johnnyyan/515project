@@ -1,0 +1,49 @@
+3 QUANTILES
+---------
+TASK 1
+Training Set Distribution: 48.7429% vs 51.2571%
+Test Set Distribution: 47.8503% vs 52.1497%
+NB Accuracy: 71.7357%
+NB Precision: 75%
+NB Recall: 68.7023%
+NB F1 measure: 71.7131%
+---------
+TASK 2
+Training Set Distribution: 64.8686% vs 35.1314%
+Test Set Distribution: 64.3443% vs 35.6557%
+NB Accuracy: 79.0984%
+NB Precision: 67.5325%
+NB Recall: 79.6935%
+NB F1 measure: 73.1107%
+---------
+TASK 3
+Training Set Distribution: 75.2273% vs 24.7727%
+Test Set Distribution: 68.2243% vs 31.7757%
+NB Accuracy: 67.757%
+NB Precision: 49.3243%
+NB Recall: 53.6765%
+NB F1 measure: 51.4085%
+---------
+TASK 4
+Training Set Distribution: 5.25246% vs 94.7475%
+Test Set Distribution: 4.96524% vs 95.0348%
+NB Accuracy: 78.4177%
+NB Precision: 96.8737%
+NB Recall: 79.8676%
+NB F1 measure: 87.5525%
+---------
+TASK 5
+Training Set Distribution: 40.9185% vs 59.0815%
+Test Set Distribution: 41.1646% vs 58.8354%
+NB Accuracy: 81.3203%
+NB Precision: 85.0882%
+NB Recall: 82.7536%
+NB F1 measure: 83.9046%
+---------
+TASK 6
+Training Set Distribution: 86.0406% vs 13.9594%
+Test Set Distribution: 83.2447% vs 16.7553%
+NB Accuracy: 83.2447%
+NB Precision: 50%
+NB Recall: 73.0159%
+NB F1 measure: 59.3548%

@@ -1,0 +1,49 @@
+e^-3
+---------
+TASK 1 
+Training Set Distribution: 48.7429 vs 51.2571
+Test Set Distribution: 47.8503 vs 52.1497
+LogReg Accuracy:   78.5032
+LogReg Precision:  77.5393
+LogReg Recall:     82.7481
+LogReg F1 measure: 80.0591
+---------
+TASK 2
+Training Set Distribution: 64.8686 vs 35.1314
+Test Set Distribution: 64.3443 vs 35.6557
+LogReg Accuracy:   82.5137
+LogReg Precision:  75.8755
+LogReg Recall:     74.7126
+LogReg F1 measure: 75.2896
+---------
+TASK 3
+Training Set Distribution: 75.2273 vs 24.7727
+Test Set Distribution: 68.2243 vs 31.7757
+LogReg Accuracy:   73.8318
+LogReg Precision:  63.0435
+LogReg Recall:     42.6471
+LogReg F1 measure: 50.8772
+---------
+TASK 4 
+Training Set Distribution: 5.25246 vs 94.7475
+Test Set Distribution: 4.96524 vs 95.0348
+LogReg Accuracy:   95.0679
+LogReg Precision:  95.0961
+LogReg Recall:     99.9652
+LogReg F1 measure: 97.4699
+---------
+TASK 5
+Training Set Distribution: 40.9185 vs 59.0815
+Test Set Distribution: 41.1646 vs 58.8354
+LogReg Accuracy:   85.9902
+LogReg Precision:  87.506
+LogReg Recall:     88.878
+LogReg F1 measure: 88.1867
+---------
+TASK 6
+Training Set Distribution: 86.0406 vs 13.9594
+Test Set Distribution: 83.2447 vs 16.7553
+LogReg Accuracy:   84.5745
+LogReg Precision:  55.5556
+LogReg Recall:     39.6825
+LogReg F1 measure: 46.2963

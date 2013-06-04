@@ -1,0 +1,51 @@
+\section{A Hierarchical Approach for Multi-task Logistic Regression}
+by Lapedriza, {\`A}gata, David Masip, and Jordi Vitri{\`a} in Pattern Recognition and Image Analysis. Springer Berlin Heidelberg, 2007. 258-265.
+\href{http://link.springer.com/content/pdf/10.1007%2F978-3-540-72849-8_33.pdf}{(Link to the PDF)}
+
+\paragraph{Background} This paper presents a technique for automatic pattern classification for a set of related tasks.
+On an abstract level a classification task asks for assigning a single object to one out of a set of predefined classes, when given a set of features that describe this object. The task of single letter optical character recognition, which we saw in our first homework, is a good example for such a task.
+
+Now, one often wants to train several classifiers for several tasks, that might share some common structure. Like if we want to train handwriting classifiers for person's unqiue style of writing, we want to make use of the fact that all of them use the english alphabet. Also we might want to get a generic classifier that is able to perform well for a new handwriting, that was not included in the training data.
+
+The authors illustrate the problem using facial verification as we will see later on. But first we want to summarize the mathematical steps they proposed to extend logistic regression to multi-task learning. We will focus on the binary classification task, as this is what we want to use in our project.
+
+\paragraph{Problem setup}
+We are given a set of related binary tasks $T_1, \dots, T_M$ with corresponding training data $D = \{S_1, \dots, S_M\}$. Each dataset consists of some feature vector $x$ of a fixed length $d$ and a binary class $y$, so $S_i = \{(x_n^i, y_n^i)\}_{n=1,\dots,N(i)}$ with $x_n^i \in \R^d$ and $y_n^i \in \{-1,1\}$.
+
+If we now train separate logistic regression classifiers $f_i$ for each task $T_i$ we would learn separate weight vectors $\w^{(i)}$ leading to a weight matrix $W = (\w^{(1)}, \dots, \w^{(M)})$. Each classifier $f_i$ uses the same logistic regression formula we saw in class, so
+\begin{align*}
+f_i(x) = P(y=1 \mid x, T_i) = \frac{1}{1+exp(-\w^{(i)} x^T)}.
+\end{align*}
+
+They denote the negated log-likelihood estimator over all tasks as $L(D,W)$ and add a Gaussian prior to regularize the weights. If we just take the norm of the weight matrix we end up with a loss function $H(W)$ that corresponds to what we saw in class
+\begin{align*}
+H(W) = L(D,W) + \frac{1}{\sigma^2} \norm{W}_2 \text{, where } L(D,W) = -\sum_{i=1}^{M} \sum_{n=1}^{N(i)} log(P(y_i^n \mid x_i^n, W)).
+\end{align*}
+This would keep the different tasks completely unrelated. To couple the parameters they impose a prior distribution on the rows of $W$. So instead of the L2-norm of $W$ as the regularization term, they take the norm of the \emph{row-mean vector} $\wm$ of $W$ into account, where $\wm_j = \sum_{i=1}^M w_{j}^{(i)}/M$.
+By adding the deviations of each $\w_{(i)}$ from $\wm$ to the regularization term, the goal is to get as $\wm$ the best possible fit across all tasks. They call the model hierarchical as now $\wm$ is the best fit across all $\w^{(i)}$ and each $\w^{(i)}$ is the best fit for its task. So they propose the loss function
+\begin{align*}
+G(W) = L(D,W) + R(W) \text{, where } R(W) = \frac{1}{\sigma_1^2} \norm{\wm}_2 + \frac{1}{\sigma_2^2} \sum_{i=1}^M \norm{\w^{(i)} - \wm}_2.
+\end{align*}
+Note that we now have two variances $\sigma_1^2$ and $\sigma_2^2$ that are parameters of the model.
+
+\paragraph{Training Algorithm}
+To train the model, so to minimize the loss function, they applied the BFGS gradient descent method. Compared to what we did in our homework, the derivation of the gradient gets more complicated, as the regularization part of the gradient depends on $\wm$ now. They derive
+\begin{align*}
+\frac{\partial R(W)}{\partial w_k^{(s)}} = \frac{2 w_k}{\sigma_1^2}\frac{\partial \wm_k}{\partial w_k^{(s)}} + \frac{2}{\sigma_2^2} \sum_{i=1}^{M}((w_k^{(i)} - \wm_k)\frac{\partial\wm_k}{\partial w_k^{(s)}}) \text{, where } \frac{\partial \wm_j(W)}{\partial w_k^{(s)}} = \begin{cases} \frac{\sigma_1^2}{\sigma_2^2 + M\sigma_1^2} & \text{if } j=k\\
+0 & \text{if } j\neq k
+\end{cases}.
+\end{align*}
+Unfortunately the authors do not mention whether this extended model has an effect on the number of iterations needed until the gradient descent method converges. Also they do not state how to choose the model parameters $\sigma_1$ and $\sigma_2$.
+
+\paragraph{Experiments}
+To show the effectiveness of the approach they apply the model on a face verification task. This binary task is the decision whether a new image belongs to the learned subject or not. They used very few images to learn from (only 2 positive and 4 negative samples) and then trained up to ten tasks simultaneously. They found that with four or more tasks the new method outperforms standard logistic regression. With all ten tasks at once the multi-task solution achieves an error rate of $15\%$ instead of $30\%$.
+While this sounds very promising they unfortunately do not provide any information on what the features were that they trained the classifier with.
+
+\paragraph{Discussion}
+Compared with standard logistic regression their approach has the main advantage that they can work with only very few samples per task. They found a quite generic model that is not targeted to any specific application and is reasonable for many multi-task problems. Also it is not considerably harder to optimize than training separate classifiers.
+
+On the side of limitations one has to note that the method makes an assumption on how the tasks are related by the particular choice of loss function. This statistical prior restricts the way information between features for different tasks can be shared.
+
+With respect to our project the authors note that multi-task learning is most effective (in comparison with single task learning) if there are only a few samples per class for training. As we collected several hundred submissions for each programming task for the dataset in our project, this might lead to only very limited improvement by multi-task logistic regression. However, we might consider training classifiers with only a few samples as well. This would correspond to the situation an organizer of a smaller contest would face or the situation during the beginning of a larger contest.
+
+\newpage
