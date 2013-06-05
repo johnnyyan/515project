@@ -1,12 +1,12 @@
 %% Load the data
-load('multiTaskTrainSet.mat')
+load('multiTaskTrainSetSubsampled2.mat')
 %load('multiTaskTestSet.mat')
 %task1_testSet
 
 %% Train LogReg
-reg=[1e-5,1e-5];
+reg=[1e-3,1e-3];
 params = multi_logreg_learn(reg,multiTaskTrainSet.states,multiTaskTrainSet.binaryFeatures);
-trainset = horzcat(multiTaskTrainSet.states{1},multiTaskTrainSet.states{2},multiTaskTrainSet.states{3});
+trainset = horzcat(multiTaskTrainSet.states{1},multiTaskTrainSet.states{2});%,multiTaskTrainSet.states{3});
 
 %% Test LogReg
 disp('---------')
