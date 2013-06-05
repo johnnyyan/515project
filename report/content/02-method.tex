@@ -117,7 +117,7 @@ We implemented the Naive Bayes classifier (see \texttt{nb\_learn.m} and \texttt{
 Finally we implemented the multi-task logistic regression model from [3]. We briefly summarize this method here as we did in the literature survey.
 
 \paragraph{Problem setup}
-We are given a set of related binary tasks $T_1, \dots, T_M$ with corresponding training data $D = \{S_1, \dots, S_M\}$. Each dataset consists of some feature vector $x$ of a fixed length $d$ and a binary class $y$, so $S_i = \{(x_n^i, y_n^i)\}_{n=1,\dots,N(i)}$ with $x_n^i \in \R^d$ and $y_n^i \in \{-1,1\}$.
+We are given a set of related binary tasks $T_1, \dots, T_M$ with corresponding training data $D = \{S_1, \dots, S_M\}$. Each dataset consists of some feature vector $x$ of a fixed length $d$ and a binary class $y$, so $S_i = \{(x_n^i, y_n^i)\}_{n=1,\dots,N(i)}$ with $x_n^i \in \{0,1\}$ and $y_n^i \in \{0,1\}$.
 
 If we now train separate logistic regression classifiers $f_i$ for each task $T_i$ we would learn separate weight vectors $\w^{(i)}$ leading to a weight matrix $W = (\w^{(1)}, \dots, \w^{(M)})$. Each classifier $f_i$ uses the same logistic regression formula we saw in class, so
 \begin{align*}
@@ -129,7 +129,7 @@ They denote the negated log-likelihood estimator over all tasks as $L(D,W)$ and 
 H(W) = L(D,W) + \frac{1}{\sigma^2} \norm{W}_2 \text{, where } L(D,W) = -\sum_{i=1}^{M} \sum_{n=1}^{N(i)} log(P(y_i^n \mid x_i^n, W)).
 \end{align*}
 This would keep the different tasks completely unrelated. To couple the parameters they impose a prior distribution on the rows of $W$. So instead of the L2-norm of $W$ as the regularization term, they take the norm of the \emph{row-mean vector} $\wm$ of $W$ into account, where $\wm_j = \sum_{i=1}^M w_{j}^{(i)}/M$.
-By adding the deviations of each $\w_{(i)}$ from $\wm$ to the regularization term, the goal is to get as $\wm$ the best possible fit across all tasks. They call the model hierarchical as now $\wm$ is the best fit across all $\w^{(i)}$ and each $\w^{(i)}$ is the best fit for its task. So they propose the loss function
+By adding the deviations of each $\w^{(i)}$ from $\wm$ to the regularization term, the goal is to get as $\wm$ the best possible fit across all tasks. They call the model hierarchical as now $\wm$ is the best fit across all $\w^{(i)}$ and each $\w^{(i)}$ is the best fit for its task. So they propose the loss function
 \begin{align*}
 G(W) = L(D,W) + R(W) \text{, where } R(W) = \frac{\lambda_1}{2} \norm{\wm}_2 + \frac{\lambda_2}{2} \sum_{i=1}^M \norm{\w^{(i)} - \wm}_2.
 \end{align*}
@@ -138,7 +138,7 @@ Note that we now have two variances $\lambda_1$ and $\lambda_2$ that are paramet
 \paragraph{Training Algorithm}
 To train the model, so to minimize the loss function, they applied the BFGS gradient descent method. Compared to what we did in our homework, the derivation of the gradient gets more complicated, as the regularization part of the gradient depends on $\wm$ now. They derive
 \begin{align*}
-\frac{\partial R(W)}{\partial w_k^{(s)}} = \frac{2 w_k}{\sigma_1^2}\frac{\partial \wm_k}{\partial w_k^{(s)}} + \frac{2}{\sigma_2^2} \sum_{i=1}^{M}((w_k^{(i)} - \wm_k)\frac{\partial\wm_k}{\partial w_k^{(s)}}) \text{, where } \frac{\partial \wm_j(W)}{\partial w_k^{(s)}} = \begin{cases} \frac{\sigma_1^2}{\sigma_2^2 + M\sigma_1^2} & \text{if } j=k\\
+\frac{\partial R(W)}{\partial w_k^{(s)}} = \lambda_1 w_k\frac{\partial \wm_k}{\partial w_k^{(s)}} + \lambda_2 \sum_{i=1}^{M}((w_k^{(i)} - \wm_k)(\delta_{is} - \frac{\partial\wm_k}{\partial w_k^{(s)}}) \text{, where } \frac{\partial \wm_j}{\partial w_k^{(s)}} = \begin{cases} \frac{\lambda_2}{\lambda_1 + M\lambda_2} & \text{if } j=k\\
 0 & \text{if } j\neq k
 \end{cases}.
 \end{align*}
