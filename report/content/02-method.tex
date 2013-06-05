@@ -131,9 +131,9 @@ H(W) = L(D,W) + \frac{1}{\sigma^2} \norm{W}_2 \text{, where } L(D,W) = -\sum_{i=
 This would keep the different tasks completely unrelated. To couple the parameters they impose a prior distribution on the rows of $W$. So instead of the L2-norm of $W$ as the regularization term, they take the norm of the \emph{row-mean vector} $\wm$ of $W$ into account, where $\wm_j = \sum_{i=1}^M w_{j}^{(i)}/M$.
 By adding the deviations of each $\w_{(i)}$ from $\wm$ to the regularization term, the goal is to get as $\wm$ the best possible fit across all tasks. They call the model hierarchical as now $\wm$ is the best fit across all $\w^{(i)}$ and each $\w^{(i)}$ is the best fit for its task. So they propose the loss function
 \begin{align*}
-G(W) = L(D,W) + R(W) \text{, where } R(W) = \frac{1}{\sigma_1^2} \norm{\wm}_2 + \frac{1}{\sigma_2^2} \sum_{i=1}^M \norm{\w^{(i)} - \wm}_2.
+G(W) = L(D,W) + R(W) \text{, where } R(W) = \frac{\lambda_1}{2} \norm{\wm}_2 + \frac{\lambda_2}{2} \sum_{i=1}^M \norm{\w^{(i)} - \wm}_2.
 \end{align*}
-Note that we now have two variances $\sigma_1^2$ and $\sigma_2^2$ that are parameters of the model.
+Note that we now have two variances $\lambda_1$ and $\lambda_2$ that are parameters of the model.
 
 \paragraph{Training Algorithm}
 To train the model, so to minimize the loss function, they applied the BFGS gradient descent method. Compared to what we did in our homework, the derivation of the gradient gets more complicated, as the regularization part of the gradient depends on $\wm$ now. They derive
@@ -142,4 +142,4 @@ To train the model, so to minimize the loss function, they applied the BFGS grad
 0 & \text{if } j\neq k
 \end{cases}.
 \end{align*}
-Unfortunately the authors do not mention whether this extended model has an effect on the number of iterations needed until the gradient descent method converges. Also they do not state how to choose the model parameters $\sigma_1$ and $\sigma_2$.
+Unfortunately the authors do not mention whether this extended model has an effect on the number of iterations needed until the gradient descent method converges. Also they do not state how to choose the model parameters $\lambda_1$ and $\lambda_2$.
