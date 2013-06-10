@@ -1,0 +1,24 @@
+---------
+TASK 1
+Training Set Distribution: 27.7197% vs 72.2803%
+Test Set Distribution: 47.8503% vs 52.1497%
+LogReg Accuracy:   58.9968%
+LogReg Precision:  56.7698%
+LogReg Recall:     89.6183%
+LogReg F1 measure: 69.5086%
+---------
+TASK 2
+Training Set Distribution: 27.7197% vs 72.2803%
+Test Set Distribution: 64.3443% vs 35.6557%
+LogReg Accuracy:   54.6448%
+LogReg Precision:  43.4862%
+LogReg Recall:     90.8046%
+LogReg F1 measure: 58.8089%
+---------
+TASK 3
+Training Set Distribution: 27.7197% vs 72.2803%
+Test Set Distribution: 68.2243% vs 31.7757%
+LogReg Accuracy:   48.5981%
+LogReg Precision:  35.7143%
+LogReg Recall:     77.2059%
+LogReg F1 measure: 48.8372%
