@@ -1,9 +1,4 @@
 %% Load the data
-%{
-cd ../matlabdata
-addpath(pwd)
-cd ../matlabsource
-%}
 
 disp('---------')
 disp('TASK 1')

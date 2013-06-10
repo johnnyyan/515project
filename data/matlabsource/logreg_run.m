@@ -1,6 +1,4 @@
 %% Load the data
-task4_trainSet
-task4_testSet
 
 %% Train LogReg
 reg=1e-3;

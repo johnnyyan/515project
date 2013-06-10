@@ -4,13 +4,13 @@ function params = multi_logreg_learn(reg,states,features)
 % Usage:
 %
 %    params = multi_logreg_learn(reg,states,features)
-%% TODO
-% Find MLE parameters for multitask logistic regression. STATES is the If M is the 
-% number of users in the dataset, then STATES is a M x 1 array of state labels,
-% FEATURES is a M x N binary matrix for each user, N is the number of 
-% features
+%
+% Find MLE parameters for multitask logistic regression. STATES is the 
+% set of states for all the samples from all the tasks. FEATURES is the 
+% set of features for all the samples from all the tasks.
+%
 % The output is the MLE paramters for multitask logistic regression
-% N x 1 array - mean weight
+% N x 1 array - mean weight, where N is the number of features.
 
 TASK       =   size(features,1);     % Number of tasks
 FEAT       =   size(features{1},1);  % Number of features
@@ -61,7 +61,8 @@ params      =   mean(reshape(paramsopt,FEAT,TASK), 2);
         end
         
         % Add regularization to gradient
-        m = reg(2)/(reg(1)+TASK*reg(2));
+        %m = reg(2)/(reg(1)+TASK*reg(2));
+        m = 1/TASK;
         for ii = 1:TASK
             gradient(:,ii) = gradient(:,ii) + paramsAvg*reg(1)*m;
             for jj = 1:TASK
@@ -73,7 +74,7 @@ params      =   mean(reshape(paramsopt,FEAT,TASK), 2);
                     n = -m;
                 end    
                 
-                gradient(:,ii) = gradient(:,ii) + diff*reg(2)*n;
+                gradient(:,ii) = gradient(:,ii) + diff*reg(jj+1)*n;
             end
         end
         gradient = reshape(gradient,FEAT*TASK,1);
@@ -86,21 +87,4 @@ params      =   mean(reshape(paramsopt,FEAT,TASK), 2);
         
         g = (state - num/den)*feature;
     end
-%{
-    function [l,g]=inferlikelihood(params,feature,state)
-        origParams = reshape(params,N,2);
-        expsum = sum(exp(feature'*origParams));
-        l = feature'*origParams(:,state) - log(expsum);
-        
-        g = zeros(N,2);
-        g(:,state) = feature;
-        delta = zeros(N,2);
-        for i = 1:2
-            delta(:,i) =  exp(feature'*origParams(:,i)) * feature;
-        end
-        
-        g = g - delta / expsum;
-        g = reshape(g,np,1);
-    end
-%}
 end
