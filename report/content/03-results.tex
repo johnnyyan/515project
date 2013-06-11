@@ -51,15 +51,11 @@ The results are listed in Figure \ref{fig:singletask}. We can see that the three
 \subsection{Multi-Task Classifiers}
 For the Multi-Task logistic regression classifier, we trained on the tasks in the qualification round and tested on the tasks in the round 1A respectively. As a baseline, we also trained on the same set of tasks in the qualification round and tested on the tasks in the round 1A separately using Naive Bayes and logistic regression respectively. The results are listed in Figure \ref{fig:multitask}, in which we used the regularization parameters $\lambda_1 = \lambda_2 = 10^{-3}$ for the Multi-Task model using simple grid search optimization. In general Multi-Task ourperforms the single task logistic regression, but as good as the Naive Base. We also listed the results from Figure \ref{fig:singletask} for single task logistic regression as a refrence, which is way better though.  
 
-We also tried two different ways to calculate the gradient, one by using the definition of mean weight directly instead of finding the optimum of mean weight first, 
+We also tried different way to calculate the gradient, by using the definition of mean weight directly instead of finding the optimum of mean weight first, 
 \begin{align*}
 \frac{\partial R(W)}{\partial w_k^{(s)}} = \frac{\lambda_1}{M} \wm_k + \lambda_2 \sum_{i=1}^{M}(w_k^{(i)} - \wm_k)(\delta_{is} - \frac{1}{M}),
 \end{align*}
-and the other by using different regularization parameters for different $w^{(i)}$,
-\begin{align*}
-\frac{\partial R(W)}{\partial w_k^{(s)}} = \lambda_1 \wm_k\frac{\partial \wm_k}{\partial w_k^{(s)}} + \sum_{i=1}^{M}\lambda_2^{(i)}(w_k^{(i)} - \wm_k)(\delta_{is} - \frac{\partial\wm_k}{\partial w_k^{(s)}}). 
-\end{align*}
-The results for the first way are more or less the same as the original and the results for the second way are improved slightly but not that much though. Hence we didn't list them here. 
+The results are more or less the same as the original, hence we didn't list them here. 
 %
 \begin{figure}
     \centering
