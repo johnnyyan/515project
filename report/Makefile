@@ -3,4 +3,4 @@
 final: final.tex
 	pdflatex final.tex;
 	pdflatex final.tex;	# for labels to show up
-	rm -f *~ *.aux *.bbl *.blg *.dvi *.log *.out *.ps *.bak *final.bib
+	rm -f *~ *.aux *.bbl *.blg *.dvi *.log *.out *.ps *.bak 

@@ -136,14 +136,10 @@ G(W) = L(D,W) + R(W) \text{, where } R(W) = \frac{\lambda_1}{2} \norm{\wm}_2 + \
 Note that we now have two variances $\lambda_1$ and $\lambda_2$ that are parameters of the model.
 
 \paragraph{Training Algorithm}
-To train the model, so to minimize the loss function, they applied the BFGS gradient descent method. Compared to what we did in our homework, the derivation of the gradient gets more complicated, as the regularization part of the gradient depends on $\wm$ now. They derive
+To train the model, so to minimize the loss function, they applied the BFGS gradient descent method. Compared to what we did in our homework, the derivation of the gradient gets more complicated, as the regularization part of the gradient depends on $\wm$ now. We believe there is a mistake on the derivative in the original paper(but this actually doesn't affect the final result much as we tested). We rederive it as the following,
 \begin{align*}
 \frac{\partial R(W)}{\partial w_k^{(s)}} = \lambda_1 \wm_k\frac{\partial \wm_k}{\partial w_k^{(s)}} + \lambda_2 \sum_{i=1}^{M}(w_k^{(i)} - \wm_k)(\delta_{is} - \frac{\partial\wm_k}{\partial w_k^{(s)}}) \text{, where } \frac{\partial \wm_j}{\partial w_k^{(s)}} = \begin{cases} \frac{\lambda_2}{\lambda_1 + M\lambda_2} & \text{if } j=k\\
 0 & \text{if } j\neq k
 \end{cases}.
 \end{align*}
 Unfortunately the authors do not mention whether this extended model has an effect on the number of iterations needed until the gradient descent method converges. Also they do not state how to choose the model parameters $\lambda_1$ and $\lambda_2$.
-We also tried to calculate the gradient by using the definition of mean weight directly. 
-\begin{align*}
-\frac{\partial R(W)}{\partial w_k^{(s)}} = \frac{\lambda_1}{M} \wm_k + \lambda_2 \sum_{i=1}^{M}(w_k^{(i)} - \wm_k)(\delta_{is} - \frac{1}{M})
-\end{align*}
