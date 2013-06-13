@@ -4,13 +4,13 @@ By parsing the archives on \href{http://www.go-hero.net/jam/13}{go-hero.net (lin
 
 To get the set of programs that solve only the small input and the set of efficient programs that also solve large input we split the submissions as follows: If a contestant was successful on both inputs, we only considered his solution to the large input. We ignored his submission on the small input, as we do not know whether the participant wrote a separate slower program for the small input or just used his efficient solution. If a contestant only solved the small input, we add this submission to the set of slow programs.
 
-Note that this is a potential source of errors, as the contestant might have in fact written a fast solution, but just did not have the time to run it on both inputs.
+Note that this is a potential source of errors, as the contestant might have in fact written an efficient solution, but just did not have the time during the contest to run it on both inputs.
 We explored the possibility of running and timing the submissions ourselves, but that proved to be too challenging, as many contestants expected specific filenames for input and output or made other assumptions of the way they were compiled and run. Some contestants even prepared their code to link it against a custom framework such that they can run each test case in parallel.
 Also it is not guaranteed, that the participants really upload their proper source code, since it is not checked or in any way enforced by the contest grading system.
 
 We did not consider the easiest task of the qualification round called 'tictactoe', because all but 213 of the 8450 C++-contestants solved the full task, as the large input was not significantly more complicated to solve.
 
-Table \ref{tbl:taskList} list the size of these datasets. We can see that in both rounds the tasks get increasingly harder, such that there are fewer successful submissions and the percentage of slow submissions increases.
+Table \ref{tbl:taskList} lists the size of the entire data set. We can see that in both rounds the tasks get increasingly harder, such that there are fewer successful submissions and the percentage of slow submissions increases.
 This way we ended up with a dataset for 6 tasks with a total of 18606 submissions consisting of 1.275 million lines of code.
 
 \begin{table}
@@ -93,11 +93,11 @@ unordered\_set \\
 \end{center}
 \end{table}
 
-We then wrote \texttt{featureCollection.py}, which splits our dataset into equally sized training sets and test sets for each task. In order to use our classifier models we need each feature to be binary. All our features are positive integers so far, so we need to convert them by comparing them to some threshold value. We tried out several ways to get such a threshold by taking the following values of the training data:
+We then wrote \texttt{featureCollection.py}, which splits our dataset into equally sized training sets and test sets for each task. In order to use our classifier models we need each feature to be binary (or at least multinomial). All our features are positive integers so far, so we need to convert them by comparing them to some threshold value. We tried out several ways to get such a threshold by taking the following values of the training data:
 \begin{itemize}
 \item median
 \item mean
-\item maximum separator (value where the percentage of slow programs versus the percentage of fast programs on one side of the threshold differed the most)
+\item maximum separator (value where the percentage of slow programs versus the percentage of fast programs on one side of the threshold differs the most)
 \item quartiles (25th, 50th and 75th percentiles)
 \item 11-quantiles (such that we get all $\frac{100i}{11}$-th percentiles for $i = 1,..,10$)
 \end{itemize}
@@ -105,9 +105,9 @@ We then wrote \texttt{featureCollection.py}, which splits our dataset into equal
 This way we converted each integer feature into a single binary feature (for median, mean and maximum separator) or into 3 or 10 correlated binary features.
 
 The median has the advantage that roughly half of the binary features will be zero and half of them will be one. 
-However it is problematic for features that are zero (or any other fixed value) in most of the samples. For instance  in the training data of task 'Bullseye' the feature 'set' is non-zero only in 16 out of 1233 samples. So the median is zero and we need to use $>$-comparison (and not $\geq$-comparison) to make sure that only these 16 samples get assigned the binary feature one.
+However it is problematic for features that are zero (or any other fixed value) in most of the samples. For instance  in the training data of task 'Bullseye' the feature 'set' is non-zero only in 16 out of 1233 samples. So the median is zero and we need to use $>$-comparison (and not $\geq$-comparison) to make sure that only these 16 samples get assigned one as their binary feature.
 
-Our script finally outputs MATLAB-codefiles for each dataset. For the multi-task setup we combined the 3 tasks from the qualification round to our multi-task training set and the 3 tasks from the round 1A to our multi-task training set (see script \texttt{prepareMultitaskSets.m}). To get v
+Our script finally outputs MATLAB-codefiles for each dataset. For the multi-task setup we combined the 3 tasks from the qualification round to our multi-task training set and the 3 tasks from the round 1A to our multi-task training set (see script \texttt{prepareMultitaskSets.m}). Note that only the multi-task logistic regression can handle a group of tasks with different number of submissions for each task. To get reference results also for Naive Bayes and logistic regression, we combined the three tasks into one training set, by sampling the submissions to get equally many contributions from each of the three tasks (see script \texttt{prepareMultitaskSubsampledTrainSets.m}).
 
 \subsection*{Single-Task Classifiers}
 Given these datasets we implemented, trained and applied classifiers for each task separately.
@@ -124,19 +124,19 @@ If we now train separate logistic regression classifiers $f_i$ for each task $T_
 f_i(x) = P(y=1 \mid x, T_i) = \frac{1}{1+exp(-\w^{(i)} x^T)}.
 \end{align*}
 
-They denote the negated log-likelihood estimator over all tasks as $L(D,W)$ and add a Gaussian prior to regularize the weights. If we just take the norm of the weight matrix we end up with a loss function $H(W)$ that corresponds to what we saw in class
+The paper denotes the negated log-likelihood estimator over all tasks as $L(D,W)$ and adds a Gaussian prior to regularize the weights. If we just take the norm of the weight matrix we end up with a loss function $H(W)$ that corresponds to what we saw in class
 \begin{align*}
 H(W) = L(D,W) + \frac{1}{\sigma^2} \norm{W}_2 \text{, where } L(D,W) = -\sum_{i=1}^{M} \sum_{n=1}^{N(i)} log(P(y_i^n \mid x_i^n, W)).
 \end{align*}
 This would keep the different tasks completely unrelated. To couple the parameters they impose a prior distribution on the rows of $W$. So instead of the L2-norm of $W$ as the regularization term, they take the norm of the \emph{row-mean vector} $\wm$ of $W$ into account, where $\wm_j = \sum_{i=1}^M w_{j}^{(i)}/M$.
-By adding the deviations of each $\w^{(i)}$ from $\wm$ to the regularization term, the goal is to get as $\wm$ the best possible fit across all tasks. They call the model hierarchical as now $\wm$ is the best fit across all $\w^{(i)}$ and each $\w^{(i)}$ is the best fit for its task. So they propose the loss function
+By adding the deviations of each $\w^{(i)}$ from $\wm$ to the regularization term, the goal is to get as $\wm$ the best possible fit across all tasks. They call the model hierarchical, as now $\wm$ is the best fit across all $\w^{(i)}$ and each $\w^{(i)}$ is the best fit for its task. So they propose the loss function
 \begin{align*}
 G(W) = L(D,W) + R(W) \text{, where } R(W) = \frac{\lambda_1}{2} \norm{\wm}_2 + \frac{\lambda_2}{2} \sum_{i=1}^M \norm{\w^{(i)} - \wm}_2.
 \end{align*}
 Note that we now have two variances $\lambda_1$ and $\lambda_2$ that are parameters of the model.
 
 \paragraph{Training Algorithm}
-To train the model, so to minimize the loss function, they applied the BFGS gradient descent method. Compared to what we did in our homework, the derivation of the gradient gets more complicated, as the regularization part of the gradient depends on $\wm$ now. We believe there is a mistake on the derivative in the original paper(but this actually doesn't affect the final result much as we tested). We rederive it as the following,
+To train the model, so to minimize the loss function, they applied the BFGS gradient descent method. Compared to what we did in our homework, the derivation of the gradient gets more complicated, as the regularization part of the gradient depends on $\wm$ now. We believe there is a small mistake in the derivative in the original paper (but this actually does not affect the final result much, as we tested). We rederive the gradient as the following,
 \begin{align*}
 \frac{\partial R(W)}{\partial w_k^{(s)}} = \lambda_1 \wm_k\frac{\partial \wm_k}{\partial w_k^{(s)}} + \lambda_2 \sum_{i=1}^{M}(w_k^{(i)} - \wm_k)(\delta_{is} - \frac{\partial\wm_k}{\partial w_k^{(s)}}) \text{, where } \frac{\partial \wm_j}{\partial w_k^{(s)}} = \begin{cases} \frac{\lambda_2}{\lambda_1 + M\lambda_2} & \text{if } j=k\\
 0 & \text{if } j\neq k

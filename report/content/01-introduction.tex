@@ -6,25 +6,25 @@ During the contest the execution of the program is done on the participant's mac
 After the end of the contest all correct submissions are published.
 The owner of the website \href{http://www.go-hero.net/jam/13}{go-hero.net (link)} has collected all of these submissions and allows for queries by task, programming language and nationality of the participants.
 
-By learning the efficiency on the two inputs, we studied whether it is possible to automatically predict the runtime of a given implementation, by only looking at static high-level features of the code, so without actually executing it.
+By looking at the efficiency on the two inputs, we studied whether it is possible to automatically predict the runtime of a given implementation, by only extracting static high-level features of the code, so without actually executing it.
 
 \subsection*{Motivation}
 In many courses and classes students are asked to implement a specific algorithm or solve a certain problem and to submit their solutions to an automatic grading tool. This is the case for many classes in algorithms and data structures in universities worldwide and online (like coursera.org).
 
-Also very popular are programming contests like the ACM International Collegiate Programming Contest (ICPC) or the International Olympiad in Informatics (IOI) for high school students. There students need to solve algorithmic puzzles in a limited amount of time. Often partial score is given according to the asymptotic complexity of the student’s implementation.
+Also very popular are programming contests like the ACM International Collegiate Programming Contest (ICPC) or the International Olympiad in Informatics (IOI) for high school students. There, students need to solve algorithmic puzzles in a limited amount of time. Often partial score is given according to the asymptotic complexity of the student’s implementation.
 
 A fast automatic evaluation tool could help both the organizers and participants of such contests, as well as instructors and students of such courses.
 By detecting programs that stand out of the ordinary, organizers can effectively detect the submissions that they need to double check manually.
-So such a classifier can help organizers of coding contests to detect outliers and new types of solutions. 
+Such a classifier can help organizers of coding contests to detect outliers and new types of solutions. 
 Especially in real-time contests (like the IOI) or on grading systems with many users (like coursera) it is very hard to stay on top of all the submissions that come in, so it is essential that the grading system supports the organizers here.
 
-From the students perspective such a tool can be helpful either while debugging during the contest or when analyzing and comparing the own solution with others afterwards. Statements of the form “90\% of the programs that are faster than yours are using std::map” might be a very helpful starting point in order to improve the student’s learning process. So a participant that tries to write a fast program for a task might also benefit from our classifier, as it can suggest possible reasons why the student's code is slow.
+From the students perspective such a tool can be helpful either while debugging during the contest or when analyzing and comparing the own solution with others afterwards. Statements of the form ``90\% of the programs that are faster than yours are using std::map'' might be a very helpful starting point in order to improve the student's learning process. So a participant, who tries to write a fast program for a task, might also benefit from our classifier, as it can suggest possible reasons why her code is slow.
 
 \subsection*{Goals}
 We set the following goals for our project:
 \begin{itemize}
-\item collect and prepare all the submissions from several tasks
-\item extract static features 
+\item collect and prepare all the submissions from several tasks of the Google Code Jam
+\item extract static features using string search and basic parsing
 \item train and evaluate Naive Bayes and logistic regression classifiers for single tasks
 \item train and evaluate multi-task logistic regression classifiers
 \end{itemize}

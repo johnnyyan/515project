@@ -1,7 +1,8 @@
+\newpage
 \section{Discussion}
 
 In conclusion, our classifiers work reasonably well, even in a multi-task setup. We saw that adding more and more features improved the performance step by step. We were even a bit surprised that our low-level features allow the inference of efficiency at all. However, the accuracy is still far below of what would be needed in a deployed system. With the current precision, the amount of mismatches between our classification and the real grading result would be far to big to allow manual checking of mismatches in large-scale contests.
 
-To improve the quality of the classifiers, just adding more features can only go so far. Maybe using a full-featured static analyzer or task-specific features, like keywords from the task description, could help.
+To improve the quality of the classifiers, just adding more features can only go so far. Maybe using a full-featured static analyzer or task-specific features, like keywords from the task description, could help. But the more diverse and involved the possible solution approaches are, the harder it gets to find features that generalize well across all submissions in the same efficiency class.
 
 The fact that our methods performed significantly better on the easier tasks, might suggest that such static-feature-approaches are more suited to entry-level grading, like programming introduction courses. There, the spectrum of submitted solutions is smaller and the implementation of the programs is more constrained and straightforward.
