@@ -3,7 +3,7 @@
 \paragraph*{Naive Bayes}
 We ran Naive Bayes and logistic regression on all 6 tasks independently and computed accuracy, precision, recall and the F1-measure of each classifier. 
 
-We first trained and run Naive Bayes using the different thresholds. Figure \ref{fig:naivebayes} gives all the results for the Naive Bayes classifier using all 35 features. As expected, we found that the Naive Bayes classifier can not profit much from multi-bit features, as they clearly violate the independence assumption. In the task lawnmower, where 95\% of all submissions solve the large test case, the multi-bit versions perform significantly worse than the median- and mean-versions. In the other tasks the differences were smaller, so we used the median threshold for further experiments, as it performed best on average.
+We first trained and ran Naive Bayes using the different thresholds. Figure \ref{fig:naivebayes} gives all the results for the Naive Bayes classifier using all 35 features. As expected, we found that the Naive Bayes classifier can not profit much from multi-bit features, as they clearly violate the independence assumption. In the task lawnmower, where 95\% of all submissions solve the large test case, the multi-bit versions perform significantly worse than the median- and mean-versions. In the other tasks the differences were smaller, so we used the median threshold for further experiments, as it performed best on average.
 
 %
 \begin{figure}
@@ -15,7 +15,7 @@ We first trained and run Naive Bayes using the different thresholds. Figure \ref
 \end{figure}
 
 \paragraph*{Logistic Regression}
-Figre \ref{fig:logisticregression} summarizes the result on logistic regression for different regularization parameters $\lambda \in [10^{-2}, 10^{-3}, 10^{-4}, 10^{-5}]$. We used the quartile-thresholds for this experiment, where each integer feature is represented using 3 bits. For the four easier tasks the results were almost identical. Only in the two hard tasks \emph{Luck} and \emph{Treasure} the choice of $\lambda = 10^{-3}$ works best. So we used this value in the later comparison.
+Figure \ref{fig:logisticregression} summarizes the result on logistic regression for different regularization parameter values $\lambda \in [10^{-2}, 10^{-3}, 10^{-4}, 10^{-5}]$. We used the quartile-thresholds for this experiment, where each integer feature is represented using 3 bits. For the four easier tasks the results were almost identical. Only in the two hard tasks \emph{Luck} and \emph{Treasure} the choice of $\lambda = 10^{-3}$ works best. So we used this value in the later comparison.
 
 %
 \begin{figure}
@@ -49,7 +49,7 @@ The results are listed in Figure \ref{fig:singletask}. As expected, having more 
 
 
 \subsection{Multi-Task Classifiers}
-For the Multi-Task logistic regression classifier, we trained on the tasks in the qualification round and tested on the tasks in the round 1A. As a baseline, we also trained on the combined set of tasks of the qualification round and tested on the tasks in round 1A separately using Naive Bayes and logistic regression. The results are listed in Figure \ref{fig:multitask}. We used the regularization parameters $\lambda_1 = \lambda_2 = 10^{-3}$ for the Multi-Task model after trying various parameter combinations using a simple grid search optimization. In general Multi-Task outperforms the single task logistic regression, but is only as good as the Naive Base approach.
+For the multi-task logistic regression classifier, we trained on the tasks in the qualification round and tested on the tasks in round 1A. As a baseline, we also trained on the combined set of tasks of the qualification round and tested on the tasks in round 1A separately using Naive Bayes and logistic regression. The results are listed in Figure \ref{fig:multitask}. We used the regularization parameters $\lambda_1 = \lambda_2 = 10^{-3}$ for the multi-task model after trying various parameter combinations using a simple grid search optimization. In general multi-task outperforms the single task logistic regression, but is only as good as the Naive Base approach.
 
 We also listed the results from Figure \ref{fig:singletask} for single task logistic regression as a reference, which is significantly more accurate. One possible explanation for the relatively poor generalization from training to test set is that the lawnmower task in the training data introduces a strong bias towards large submissions, which carries over to the test set.
 
@@ -57,7 +57,7 @@ We also tried a different way to calculate the gradient, by using the definition
 \begin{align*}
 \frac{\partial R(W)}{\partial w_k^{(s)}} = \frac{\lambda_1}{M} \wm_k + \lambda_2 \sum_{i=1}^{M}(w_k^{(i)} - \wm_k)(\delta_{is} - \frac{1}{M}),
 \end{align*}
-The results were more or less identical, hence we do not list them here.
+But the results were more or less identical, hence we do not list them here.
 %
 \begin{figure}
     \centering
